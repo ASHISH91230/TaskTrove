@@ -25,6 +25,7 @@ export default function Instructor() {
       setLoading(false)
     })()
   }, [])
+ 
 
   //   const totalAmount = studentData?.reduce(
   //     (acc, curr) => acc + curr.totalAmountGenerated,

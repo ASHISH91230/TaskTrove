@@ -6,6 +6,7 @@ import profileReducer from "../slices/profileSlice";
 import taskReducer from "../slices/TaskSlice"
 import viewTaskReducer from "../slices/viewTaskSlice";
 
+
 const rootReducer  = combineReducers({
     auth: authReducer,
     profile:profileReducer,

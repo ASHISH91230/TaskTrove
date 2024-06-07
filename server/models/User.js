@@ -64,6 +64,20 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		badge: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "badges"
+			},
+		],
+		Streak: 
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "streakDate"
+			},
+	
+
+
 	/*courseProgress */	TaskProgress: [
 			{
 				type: mongoose.Schema.Types.ObjectId,

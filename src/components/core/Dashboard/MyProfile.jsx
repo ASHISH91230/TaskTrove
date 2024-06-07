@@ -7,13 +7,14 @@ import IconBtn from "../../common/IconBtn"
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
 import { useState, useEffect } from "react"
+import { getUserBadges } from "../../../services/operations/StreakBadgesAPI"
 
 export default function MyProfile() {
   const { user } = useSelector((state) => state.profile)
   const navigate = useNavigate()
   const { width, height } = useWindowSize()
 
-
+const {token}=useSelector((state)=>state.auth)
 //   const [isConfettiActive, setIsConfettiActive] = useState(true);
 
 //   useEffect(() => {
@@ -22,6 +23,20 @@ export default function MyProfile() {
 //     }, 5000);
 // return () => clearTimeout(timer);
 //   }, []);
+
+
+
+useEffect(() => {
+  ; (async () => {
+    // setLoading(true)
+    const image = await getUserBadges(user._id,token)
+    console.log("images------->",image)
+    // setLoading(false)
+  })()
+}, [])
+
+
+
 
 
   return (
