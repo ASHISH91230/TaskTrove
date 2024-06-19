@@ -13,7 +13,7 @@ export default function MyProfile() {
   const { user } = useSelector((state) => state.profile)
   const navigate = useNavigate()
   const { width, height } = useWindowSize()
-
+  const [images, setImages] = useState([]);
 const {token}=useSelector((state)=>state.auth)
 //   const [isConfettiActive, setIsConfettiActive] = useState(true);
 
@@ -29,11 +29,12 @@ const {token}=useSelector((state)=>state.auth)
 useEffect(() => {
   ; (async () => {
     // setLoading(true)
-    const image = await getUserBadges(user._id,token)
-    console.log("images------->",image)
+    const imageArray = await getUserBadges(user._id,token)
+    console.log("images------->",imageArray);
+    setImages(imageArray);
     // setLoading(false)
   })()
-}, [])
+}, []);
 
 
 
@@ -48,6 +49,13 @@ useEffect(() => {
       <h1 className="mb-14 text-3xl font-medium text-richblack-5">
         My Profile
       </h1>
+
+
+    <div>
+      <img src={user?.Image}></img>
+    </div>
+
+     
       <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
         <div className="flex items-center gap-x-4">
           <img

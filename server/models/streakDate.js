@@ -17,7 +17,7 @@ const streakDateSchema = new mongoose.Schema(
         },
         currentStreak: {
             type: Number,
-            default: 0
+            default: 1
         },
         dailylogin:{
             type: Number,

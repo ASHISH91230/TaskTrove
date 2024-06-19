@@ -5,13 +5,13 @@ const getUserBadges = async(req, res)=>{
     const {userId} = req.body;
     console.log("ksdbjvkejbvksjdbvksdb",userId)
     try{
-        const user = await User.findById(userId).populate("badge");
+        const user = await User.findById(userId).populate('badge');
         console.log("usering badges",user.badge)
-        console.log("usering badges",user)
+      
         if(!user){
             return res.status(404).send('Badges not found');
         }
-        res.json(user.badge.Image);
+        res.json(user.badge);
 
     }
     catch(error){
