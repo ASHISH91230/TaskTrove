@@ -1,4 +1,3 @@
-
 import { toast } from "react-hot-toast"
 import { apiConnector } from "../apiconnector"
 import {taskEndpoints} from "../apis"
@@ -17,6 +16,7 @@ const {
     GET_ALL_STUDENT_TASK_API,
     DELETE_TASK_API,
     GET_FULL_TASK_DETAILS_AUTHENTICATED,
+    CREATE_CATEGORY_TASK,
     CREATE_RATING_API,
     SUBSECTION_COMPLETION_API,
 } = taskEndpoints
@@ -29,7 +29,7 @@ export const getAllTask = async () => {
     try {
         const response = await apiConnector("GET", GET_ALL_TASK_API)
         if (!response?.data?.success) {
-            throw new Error("Could Not Fetch Task Categories")
+            throw new Error("Could Not Fetch The Task")
         }
         result = response?.data?.data
     } catch (error) {
@@ -44,7 +44,6 @@ export const getAllTask = async () => {
 
 export const fetchTaskDetails = async (taskId) => {
     const toastId = toast.loading("Loading...")
-    //   dispatch(setLoading(true));
     let result = null
     try {
       const response = await apiConnector("POST", TASK_DETAILS_API, {
@@ -59,15 +58,13 @@ export const fetchTaskDetails = async (taskId) => {
     } catch (error) {
       console.log("TASK_DETAILS_API API ERROR............", error)
       result = error.response.data
-      // toast.error(error.response.data.message);
     }
     toast.dismiss(toastId)
-    //   dispatch(setLoading(false));
     return result
   }
 
 
-  // fetching the available course categories
+  // fetching the available task categories
   export const fetchTaskCategories = async () => {
     let result = []
     try {
@@ -84,11 +81,10 @@ export const fetchTaskDetails = async (taskId) => {
     return result
   }
   
-// add the course details
+// add the task details
   export const addTaskDetails = async (data, token) => {
     let result = null
     const toastId = toast.loading("Loading...")
-    console.log("data from taskdetailapi",data)
     try {
       const response = await apiConnector("POST", CREATE_TASK_API, data, {
         "Content-Type": "multipart/form-data",
@@ -105,7 +101,7 @@ export const fetchTaskDetails = async (taskId) => {
     } catch (error) {
      
       console.log("CREATE TASK API ERROR............", error)
-      toast.error("this is error message for addtaskdetail",error.message)
+      toast.error("This Is Error Message For AddTaskDetail",error.message)
     }
     toast.dismiss(toastId)
     return result
@@ -113,7 +109,7 @@ export const fetchTaskDetails = async (taskId) => {
   }
   
 
-// edit the course details
+// edit the task details
   export const editTaskDetails = async (data, token) => {
     let result = null
     const toastId = toast.loading("Loading...")
@@ -293,11 +289,11 @@ export const fetchInstructorTaskes = async (token) => {
       )
       console.log("STUDENT TASK API RESPONSE............", response)
       if (!response?.data?.success) {
-        throw new Error("Could Not Fetch STudent Task")
+        throw new Error("Could Not Fetch Student Task")
       }
       result = response?.data?.data
     } catch (error) {
-      console.log("INSTRUCTOR TAskes API ERROR............", error)
+      console.log("Instructor Task API ERROR............", error)
       toast.error(error.message)
     }
     toast.dismiss(toastId)
@@ -325,10 +321,9 @@ export const deleteTask = async (data, token) => {
   }
   
   
-// get full details of a course
+// get full details of a task
 export const getFullDetailsOfTask = async (taskId, token) => {
     const toastId = toast.loading("Loading...")
-    //   dispatch(setLoading(true));
     let result = null
     try {
       const response = await apiConnector(
@@ -350,14 +345,38 @@ export const getFullDetailsOfTask = async (taskId, token) => {
     } catch (error) {
       console.log("TASK_FULL_DETAILS_API API ERROR............", error)
       result = error.response.data
-      // toast.error(error.response.data.message);
     }
     toast.dismiss(toastId)
-    //   dispatch(setLoading(false));
     return result
   }
   
+//add category task
+export const addCategoryTask = async (taskId, token,navigate) => {
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector(
+      "POST",
+      CREATE_CATEGORY_TASK,
+      {
+        taskId,
+      },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    )
+    console.log("CREATE_CATEORY_TASK_API API RESPONSE............", response)
 
+    if (!response.data.success) {
+      throw new Error(response.data.message)
+    }
+    toast.success("Task Added")
+    navigate("/dashboard/enrolled-challenges")
+  } catch (error) {
+    console.log("CREATE_CATEGORY_TASK_API API ERROR............", error)
+    toast.error(error.response.data.message);
+  }
+  toast.dismiss(toastId)
+}
   
 // mark a subsection as complete
 export const markSubsectionAsComplete = async (data, token) => {
@@ -387,7 +406,7 @@ export const markSubsectionAsComplete = async (data, token) => {
   }
 
   
-// create a rating for course
+// create a rating for task
 export const createRating = async (data, token) => {
     const toastId = toast.loading("Loading...")
     let success = false

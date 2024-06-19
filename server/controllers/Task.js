@@ -33,7 +33,7 @@ exports.createTask = async (req, res) => {
 		) {
 			return res.status(400).json({
 				success: false,
-				message: "All Fields are Mandatory",
+				message: "All Fields Are Mandatory",
 			});
 		}
 		if (!status || status === undefined) {
@@ -97,14 +97,14 @@ exports.createTask = async (req, res) => {
 		res.status(200).json({
 			success: true,
 			data: newTask,
-			message: "task Created Successfully",
+			message: "Task Created Successfully",
 		});
 	} catch (error) {
 		// Handle any errors that occur during the creation of the task
 		console.error(error);
 		res.status(500).json({
 			success: false,
-			message: "Failed to create task",
+			message: "Failed To Create Task",
 			error: error.message,
 		});
 	}
@@ -131,7 +131,7 @@ exports.getAlltasks = async (req, res) => {
 		console.log(error);
 		return res.status(404).json({
 			success: false,
-			message: `Can't Fetch task Data`,
+			message: `Can't Fetch Task Data`,
 			error: error.message,
 		});
 	}
@@ -168,15 +168,22 @@ exports.gettaskDetails = async (req, res) => {
 		if (!taskDetails) {
 			return res.status(400).json({
 				success: false,
-				message: `Could not find the task with ${taskId}`,
+				message: `Could Not Find The Task With ${taskId}`,
 			});
 		}
+		let totalDurationInSeconds = 0
+		taskDetails.taskContent.forEach((content) => {
+			content.subSection.forEach((subSection) => {
+				totalDurationInSeconds += parseInt(subSection.timeDuration)
+			})
+		})
+
+		const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
 		//return response
-		console.log(taskDetails);
 		return res.status(200).json({
 			success: true,
-			message: "task Details fetched successfully",
-			data: taskDetails,
+			message: "Task Details Fetched Successfully",
+			data: { taskDetails, totalDuration },
 		})
 
 	}
@@ -194,7 +201,7 @@ exports.editTask = async (req, res) => {
 	try {
 		const task = await Task.findById(req.body.taskId)
 		if (!task) {
-			return res.status(404).json({ error: "Task not found" })
+			return res.status(404).json({ error: "Task Not Found" })
 		}
 
 		if (req.body.taskName !== undefined)
@@ -229,14 +236,14 @@ exports.editTask = async (req, res) => {
 			.exec()
 		res.json({
 			success: true,
-			message: "Task updated successfully",
+			message: "Task Updated Successfully",
 			data: updatedTask,
 		})
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({
 			success: false,
-			message: "Internal server error",
+			message: "Internal Server Error",
 			error: error.message,
 		})
 	}
@@ -280,7 +287,7 @@ exports.getStudentTask = async (req, res) => {
 		console.log(error)
 		res.status(500).json({
 			success: false,
-			message: "Failed to Retrives Student Task",
+			message: "Failed to Retrive Student Task",
 			error: error.message,
 		})
 	}
@@ -295,13 +302,13 @@ exports.deleteTask = async (req, res) => {
 		// Find the task
 		const task = await Task.findById(taskId)
 		if (!task) {
-			return res.status(404).json({ message: "task not found" })
+			return res.status(404).json({ message: "Task Not Found" })
 		}
 		//Find the category and delete the task
-		await Category.findByIdAndUpdate(task.category,{
-			$pull:{Taskes:taskId}
+		await Category.findByIdAndUpdate(task.category, {
+			$pull: { Taskes: taskId }
 		})
-		// Unenroll students from the course
+		// Unenroll students from the task
 		const studentsEnrolled = task.studentsEnrolled
 		for (const studentId of studentsEnrolled) {
 			await User.findByIdAndUpdate(studentId, {
@@ -330,13 +337,13 @@ exports.deleteTask = async (req, res) => {
 
 		return res.status(200).json({
 			success: true,
-			message: "task deleted successfully",
+			message: "Task Deleted Successfully",
 		})
 	} catch (error) {
 		console.error(error)
 		return res.status(500).json({
 			success: false,
-			message: "Server error",
+			message: "Server Error",
 			error: error.message,
 		})
 	}
@@ -373,14 +380,14 @@ exports.getFullTaskDetails = async (req, res) => {
 		if (!taskDetails) {
 			return res.status(400).json({
 				success: false,
-				message: `Could not find task with id: ${taskId}`,
+				message: `Could Not Find Task With Id: ${taskId}`,
 			})
 		}
 
 		if (taskDetails.status === "Draft") {
 			return res.status(403).json({
 				success: false,
-				message: `Accessing a draft task is forbidden`,
+				message: `Accessing A Draft Task Is Forbidden`,
 			});
 		}
 		let totalDurationInSeconds = 0
@@ -401,6 +408,44 @@ exports.getFullTaskDetails = async (req, res) => {
 					: [],
 			},
 		})
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: error.message,
+		})
+	}
+}
+
+exports.addCategoryTask = async (req, res) => {
+	try {
+		const { taskId } = req.body;
+		const userId = req.user.id;
+		await User.findByIdAndUpdate(
+			{
+				_id: userId,
+			},
+			{
+				$push: {
+					enrolledChallenges: taskId,
+				},
+			},
+			{ new: true }
+		);
+		await Task.findByIdAndUpdate(
+			{
+				_id: taskId,
+			},
+			{
+				$push: {
+					studentsEnrolled: userId,
+				},
+			},
+			{ new: true }
+		);
+		res.status(200).json({
+			success: true,
+			message: "Task Created Successfully",
+		});
 	} catch (error) {
 		return res.status(500).json({
 			success: false,

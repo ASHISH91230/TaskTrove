@@ -12,7 +12,8 @@ const {
   gettaskDetails,
   getStudentTask,
   deleteTask,
-  getFullTaskDetails
+  getFullTaskDetails,
+  addCategoryTask
 } = require("../controllers/Task")
 
 
@@ -76,6 +77,7 @@ router.get("/getStudentTask",auth,isStudent,getStudentTask);
 router.post("/updateTaskProgress", auth, isStudent, updateTaskProgress)
 router.delete("/deleteTask",deleteTask);
 router.post("/getFullTaskDetails", auth, getFullTaskDetails)
+router.post("/addCategoryTask",auth,addCategoryTask)
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)
 // ********************************************************************************************************
