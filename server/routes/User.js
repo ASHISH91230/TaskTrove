@@ -14,13 +14,38 @@ const {
   resetPassword,
 } = require("../controllers/ResetPassword")
 
-const { auth } = require("../middlewares/auth")
+const { auth, isStudent } = require("../middlewares/auth")
+
+
+// //adding routes for streak--------------------------->AKG
+// const{
+//   addStreak,
+//   resetStreak
+// }=require('../controllers/Streak')
+
+
+// const {
+//   getUserBadges,
+//     createBadge
+// }=require('../controllers/Badges')
+
+
 
 // Routes for Login, Signup, and Authentication
 
 // ********************************************************************************************************
 //                                      Authentication routes
 // ********************************************************************************************************
+
+
+
+// // streak ke liye --------->AKG
+// router.post('/addStreak',auth,isStudent,addStreak)
+// router.post('/resetStreak',auth,isStudent,resetStreak)
+
+// //badges ke liye-------------->AKG
+// router.post('/createBadge',auth,isStudent,createBadge)
+// router.get('/getUserBadges',auth,isStudent,getUserBadges)
 
 // Route for user login
 router.post("/login", login)

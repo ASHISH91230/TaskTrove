@@ -5,7 +5,10 @@ import { apiConnector } from "../apiconnector"
 import { profileEndpoints } from "../apis"
 import { logout } from "./authAPI"
 
-const { GET_USER_DETAILS_API, GET_USER_ENROLLED_CHALLENGES_API, GET_STUDENT_DATA_API } = profileEndpoints
+const { GET_USER_DETAILS_API, GET_USER_ENROLLED_CHALLENGES_API,GET_STUDENT_DATA_API, 
+  // GET_USER_STREAK_DATA_API,
+  // GET_USER_BADGES_DATA_API
+ } = profileEndpoints
 
 export function getUserDetails(token, navigate) {
   return async (dispatch) => {

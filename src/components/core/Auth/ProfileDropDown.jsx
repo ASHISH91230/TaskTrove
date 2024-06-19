@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { AiOutlineCaretDown } from "react-icons/ai"
 import { VscDashboard, VscSignOut } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
@@ -6,9 +6,15 @@ import { Link, useNavigate } from "react-router-dom"
 import ConfirmationModal from "../../common/ConfirmationModal"
 import useOnClickOutside from "../../../hooks/useOnClickOutside"
 import { logout } from "../../../services/operations/authAPI"
-
+import { FaFireAlt } from "react-icons/fa";
+import { apiConnector } from "../../../services/apiconnector"
+import { StreakEndPointWithBadges, profileEndpoints } from "../../../services/apis"
+import { getStreakDetails } from "../../../services/operations/StreakBadgesAPI"
 export default function ProfileDropdown() {
   const { user } = useSelector((state) => state.profile)
+  const { token } = useSelector((state) => state.auth);
+  const [userstreak, setUserStreak] = useState([]);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -16,11 +22,45 @@ export default function ProfileDropdown() {
   const [confirmationModal, setConfirmationModal] = useState(null)
   useOnClickOutside(ref, () => setOpen(false))
 
+
+  const fetchStreak = async () => {
+    try {
+      console.log("igiggigiggig")
+      console.log(user)
+      const result = await getStreakDetails(user._id, token);
+
+      setUserStreak(result)
+      console.log("result value", result)
+    }
+    catch (error) {
+      console.log("src error in fetchStreak");
+    }
+  }
+
+  useEffect(() => {
+    setLoading(true)
+    fetchStreak()
+    console.log("scjaskcjasckjbaskc")
+    setLoading(false)
+  }, [])
+
   if (!user) return null;
 
   return (
     <button className="relative" onClick={() => setOpen(true)}>
       <div className="flex items-center gap-x-1">
+        {/* streak icon by ------------->AKG */}
+        <div className=" ">
+
+
+          <FaFireAlt color=" orange" className=" m-auto w-8 h-6 mr-4" />
+          <div className=" text-white  bg-gray-400  m-2 absolute translate-x-5 -translate-y-10 ">
+            {loading ? 'Loading...' : `${userstreak.currentStreak || 0} `}
+
+          </div>
+
+        </div>
+
         <img
           src={user?.image}
           alt={`profile-${user?.firstName}`}
@@ -59,7 +99,7 @@ export default function ProfileDropdown() {
           </div>
         </div>
       )}
-    {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
+      {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </button>
   )
 }

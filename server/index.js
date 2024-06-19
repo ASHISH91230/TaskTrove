@@ -7,7 +7,8 @@ const profileRoutes = require("./routes/Profile");
 const TaskRoutes = require("./routes/Task");
 const contactUsRoute = require("./routes/Contact");
 const database = require("./config/database");
-
+const Streak = require("./routes/Streak");
+const Badges = require("./routes/Badges");
 const cookiesParser = require("cookie-parser");
 const cors = require("cors");
 const {cloudinaryConnect}=require("./config/cloudinary");
@@ -47,7 +48,9 @@ app.use("/api/v1/Task",TaskRoutes);
 app.use("/api/v1/reach", contactUsRoute);
 
 //def routes
-
+app.use("/api/v1/Streak",Streak)
+app.use("/api/v1/Badges",Badges)
+app.use
 app.get("/",(req,res)=>{
     return res.json({
         success:true,
