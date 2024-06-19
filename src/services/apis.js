@@ -47,8 +47,8 @@ export const taskEndpoints = {
   DELETE_SECTION_API: BASE_URL + "/Task/deleteSection",
   DELETE_SUBSECTION_API: BASE_URL + "/Task/deleteSubSection",
   DELETE_TASK_API: BASE_URL + "/Task/deleteTask",
-  GET_FULL_TASK_DETAILS_AUTHENTICATED:
-    BASE_URL + "/Task/getFullTaskDetails",
+  GET_FULL_TASK_DETAILS_AUTHENTICATED: BASE_URL + "/Task/getFullTaskDetails",
+  CREATE_CATEGORY_TASK: BASE_URL + "/Task/addCategoryTask",
   SUBSECTION_COMPLETION_API: BASE_URL + "/Task/updateTaskProgress",
   CREATE_RATING_API: BASE_URL + "/Task/createRating",
 }

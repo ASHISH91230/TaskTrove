@@ -6,15 +6,13 @@ import { useNavigate } from "react-router-dom"
 
 import { sendOtp } from "../../../services/operations/authAPI"
 import { setSignupData } from "../../../slices/authSlice"
- import { ACCOUNT_TYPE } from "../../../utils/constants"
-// import Tab from "../../common/Tab"
+import { ACCOUNT_TYPE } from "../../../utils/constants"
 
 function SignupForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  // student or instructor
-   const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
+  const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -47,10 +45,8 @@ function SignupForm() {
     }
     const signupData = {
       ...formData,
-       accountType,
+      accountType,
     }
-  
-    console.log(formData.email);
     // Setting signup data to state
     // To be used after otp verification
     dispatch(setSignupData(signupData))
@@ -68,25 +64,8 @@ function SignupForm() {
     setAccountType(ACCOUNT_TYPE.STUDENT)
   }
 
-  // data to pass to Tab component
-  // const tabData = [
-  //   {
-  //     id: 1,
-  //     tabName: "Student",
-  //     type: ACCOUNT_TYPE.STUDENT,
-  //   },
-  //   {
-  //     id: 2,
-  //     tabName: "Instructor",
-  //     type: ACCOUNT_TYPE.INSTRUCTOR,
-  //   },
-  // ]
-
   return (
     <div>
-      {/* Tab */}
-      {/* <Tab tabData={tabData} field={accountType} setField={setAccountType} /> */}
-      {/* Form */}
       <form onSubmit={handleOnSubmit} className="flex w-full flex-col gap-y-2">
         <div className="flex gap-x-4">
           <label>
@@ -103,7 +82,7 @@ function SignupForm() {
               style={{
                 boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
               }}
-              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-800"
+              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-50"
             />
           </label>
           <label>
@@ -120,7 +99,7 @@ function SignupForm() {
               style={{
                 boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
               }}
-              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-500"
+              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-50"
             />
           </label>
         </div>
@@ -138,7 +117,7 @@ function SignupForm() {
             style={{
               boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
             }}
-            className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-500"
+            className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-50"
           />
         </label>
         <div className="flex gap-x-4">
@@ -156,7 +135,7 @@ function SignupForm() {
               style={{
                 boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
               }}
-              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-10 text-richblack-500"
+              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-10 text-richblack-50"
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
@@ -183,7 +162,7 @@ function SignupForm() {
               style={{
                 boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
               }}
-              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-10 text-richblack-500"
+              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-10 text-richblack-50"
             />
             <span
               onClick={() => setShowConfirmPassword((prev) => !prev)}

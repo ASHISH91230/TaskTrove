@@ -34,24 +34,24 @@ const About = () => {
       </section>
 
       <section className="border-b border-richblack-700">
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
+        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500 mb-5">
           <div className="h-[100px] "></div>
           <Quote />
         </div>
       </section>
 
       <section>
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
+        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between text-richblack-500">
           <div className="flex flex-col items-center gap-10 lg:flex-row justify-between">
             <div className="mt-24 mb-12 flex lg:w-[50%] flex-col gap-10">
               <h1 className="bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCB045] bg-clip-text text-4xl font-semibold text-transparent lg:w-[70%] ">
                 Our Founding Story
               </h1>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-               Task Trove was born out of a simple yet profound realisation: the power of small, consistent actions to transform lives. The founders, driven by personal experiences, understood the challenge of staying organized, motivated and connected in a fast-paced world.
+                Task Trove was born out of a simple yet profound realisation: the power of small, consistent actions to transform lives. The founders, driven by personal experiences, understood the challenge of staying organized, motivated and connected in a fast-paced world.
               </p>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-              We envisioned a tool that not only will help individuals manage their tasks, but also will inspire them to set and achieve goals while fostering a supportive comunity.
+                We envisioned a tool that not only will help individuals manage their tasks, but also will inspire them to set and achieve goals while fostering a supportive community.
               </p>
             </div>
 
@@ -74,10 +74,10 @@ const About = () => {
             </div>
             <div className="my-24 flex lg:w-[40%] flex-col gap-10">
               <h1 className="bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] text-transparent bg-clip-text text-4xl font-semibold lg:w-[70%] ">
-              Our Mission
+                Our Mission
               </h1>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-             Our mission is to simplify and enhance the way people manage their tasks,set goals and connect with others. We are commited to providing a user-friendly platform that promotes personal growth accountability,and community support.
+                Our mission is to simplify and enhance the way people manage their tasks,set goals and connect with others. We are commited to providing a user-friendly platform that promotes personal growth accountability,and community support.
               </p>
             </div>
           </div>

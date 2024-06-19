@@ -10,6 +10,8 @@ import VerifyEmail from "./pages/VerifyEmail";
 import UpdatePassword from "./pages/UpdatePassword";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Catalog from "./pages/Catalog";
+import TaskDetails from "./pages/TaskDetails";
 import Dashboard from ".//pages/Dashboard";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import EnrolledChallenges from "./components/core/Dashboard/EnrolledChallenges";
@@ -26,12 +28,10 @@ import ViewTask from "./pages/ViewTask"
 import SubsectionDetails from "./components/core/ViewTask/SubsectionDetails";
 import Student from "./components/core/Dashboard/Student";
 function App() {
-  // bg-gradient-to-r from-sky-50 to-fuchsia-200 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.profile)
-
 
   return (
     <div className="w-screen min-h-screen bg-gradient-to-r from-sky-50 to-fuchsia-200 flex flex-col font-inter">
@@ -89,7 +89,8 @@ function App() {
           }
         />
         <Route path="/contact" element={<Contact />} />
-
+        <Route path="catalog/:catalogName" element={<Catalog />} />
+        <Route path="tasks/:taskId" element={<TaskDetails />} />
         <Route
           element={
             <PrivateRoute>
@@ -99,7 +100,6 @@ function App() {
         >
           <Route path="dashboard/my-profile" element={<MyProfile />} />
           <Route path="dashboard/Settings" element={<Settings />} />
-
 
           {
             user?.accountType === ACCOUNT_TYPE.STUDENT && (
@@ -135,14 +135,8 @@ function App() {
       }
 
       </Route>
-
-
         <Route path="*" element={<Error />} />
       </Routes>
-
-
-
-
     </div>
   );
 }
