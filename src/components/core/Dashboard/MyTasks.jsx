@@ -4,7 +4,6 @@ import { VscAdd } from "react-icons/vsc"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import TasksTable from './InstructorTasks/TasksTable'
-// import { fetchInstructorCourses } from "../../../services/operations/courseDetailsAPI"
 import IconBtn from "../../common/IconBtn"
 import { fetchInstructorTaskes } from '../../../services/operations/taskDetailsAPI'
 export default function MyTasks() {
@@ -28,7 +27,7 @@ export default function MyTasks() {
   return (
     <div>
       <div className="mb-14 flex items-center justify-between">
-        <h1 className="text-3xl font-medium text-richblack-5">My Tasks</h1>
+        <h1 className="text-3xl font-medium text-richblack-500">My Tasks</h1>
         <IconBtn
           text="Add Tasks"
           onclick={() => navigate("/dashboard/add-task")}

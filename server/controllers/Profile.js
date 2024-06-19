@@ -4,6 +4,7 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const ChallengesProgress = require("../models/ChallengesProgress");
 const Task = require("../models/Task")
 const { convertSecondsToDuration } = require("../utils/convertSeconds")
+const mongoose = require("mongoose")
 // Method for updating a profile
 exports.updateProfile = async (req, res) => {
 	try {
@@ -31,7 +32,7 @@ exports.updateProfile = async (req, res) => {
 		await userDetails.save();
 		return res.json({
 			success: true,
-			message: "Profile updated successfully",
+			message: "Profile Updated Successfully",
 			userDetails,
 		});
 	} catch (error) {
@@ -50,25 +51,32 @@ exports.deleteAccount = async (req, res) => {
 		if (!user) {
 			return res.status(404).json({
 				success: false,
-				message: "User not found",
+				message: "User Not Found",
 			});
 		}
 		// Delete Assosiated Profile with the User
 		await Profile.findByIdAndDelete({
 			_id: new mongoose.Types.ObjectId(user.additionalDetails),
-		  })
+		})
+		for (const taskId of user.enrolledChallenges) {
+			await Task.findByIdAndUpdate(
+			  taskId,
+			  { $pull: { studentsEnrolled: id } },
+			  { new: true }
+			)
+		  }
 		// Now Delete User
 		await User.findByIdAndDelete({ _id: id });
 		res.status(200).json({
 			success: true,
-			message: "User deleted successfully",
+			message: "User Deleted Successfully",
 		});
 		await ChallengesProgress.deleteMany({ userId: id })
 	} catch (error) {
 		console.log(error);
 		res
 			.status(500)
-			.json({ success: false, message: "User Cannot be Deleted" });
+			.json({ success: false, message: "User Cannot Be Deleted" });
 	}
 };
 
@@ -81,7 +89,7 @@ exports.getAllUserDetails = async (req, res) => {
 		console.log(userDetails);
 		res.status(200).json({
 			success: true,
-			message: "User Data fetched successfully",
+			message: "User Data Fetched Successfully",
 			data: userDetails,
 		});
 	} catch (error) {
@@ -110,7 +118,7 @@ exports.updateDisplayPicture = async (req, res) => {
 		)
 		res.send({
 			success: true,
-			message: `Image Updated successfully`,
+			message: `Image Updated Successfully`,
 			data: updatedProfile,
 		})
 	} catch (error) {
@@ -137,47 +145,44 @@ exports.getEnrolledChallenges = async (req, res) => {
 				},
 			})
 			.exec()
-
 		const arr = []
-		const progress=[]
+		const progress = []
 		let c = 0;
-		let d=0;
-
-	userDetails = userDetails.toObject()
-    var SubsectionLength = 0
-    for (var i = 0; i < userDetails.enrolledChallenges.length; i++) {
-      let totalDurationInSeconds = 0
-      SubsectionLength = 0
-      for (var j = 0; j < userDetails.enrolledChallenges[i].taskContent.length; j++) {
-        totalDurationInSeconds += userDetails.enrolledChallenges[i].taskContent[
-          j
-        ].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
-        SubsectionLength +=
-          userDetails.enrolledChallenges[i].taskContent[j].subSection.length
-      }
-	  	const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
-		arr[c++] = totalDuration
-		let taskProgressCount = await ChallengesProgress.findOne({
-			challengeId: userDetails.enrolledChallenges[i]._id,
-			userId: userId,
-		  })
-      taskProgressCount = taskProgressCount?.completedSubsection.length
-      if (SubsectionLength === 0) {
-        progress[d++] = 100
-      } else {
-        // To make it up to 2 decimal point
-        const multiplier = Math.pow(10, 2)
-        progress[d++] =
-          Math.round(
-            (taskProgressCount / SubsectionLength) * 100 * multiplier
-          ) / multiplier
-      }
-    }
-
+		let d = 0;
+		userDetails = userDetails.toObject()
+		var SubsectionLength = 0
+		for (var i = 0; i < userDetails.enrolledChallenges.length; i++) {
+			let totalDurationInSeconds = 0
+			SubsectionLength = 0
+			for (var j = 0; j < userDetails.enrolledChallenges[i].taskContent.length; j++) {
+				totalDurationInSeconds += userDetails.enrolledChallenges[i].taskContent[
+					j
+				].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
+				SubsectionLength +=
+					userDetails.enrolledChallenges[i].taskContent[j].subSection.length
+			}
+			const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+			arr[c++] = totalDuration
+			let taskProgressCount = await ChallengesProgress.findOne({
+				challengeId: userDetails.enrolledChallenges[i]._id,
+				userId: userId,
+			})
+			taskProgressCount = taskProgressCount?.completedSubsection.length
+			if (SubsectionLength === 0) {
+				progress[d++] = 100
+			} else {
+				// To make it up to 2 decimal point
+				const multiplier = Math.pow(10, 2)
+				progress[d++] =
+					Math.round(
+						(taskProgressCount / SubsectionLength) * 100 * multiplier
+					) / multiplier
+			}
+		}
 		if (!userDetails) {
 			return res.status(400).json({
 				success: false,
-				message: `Could not find user with id: ${userDetails}`,
+				message: `Could Not Find User With Id: ${userDetails}`,
 			})
 		}
 		return res.status(200).json({
@@ -194,26 +199,56 @@ exports.getEnrolledChallenges = async (req, res) => {
 
 exports.studentDashboard = async (req, res) => {
 	try {
-		const taskDetails = await Task.find({ instructor: req.user.id })
-
-		//   const taskData = taskDetails.map((task) => {
-		// 	const totalStudentsEnrolled = task.studentsEnrolled.length
-		// 	const totalAmountGenerated = totalStudentsEnrolled * task.price
-
-		// Create a new object with the additional fields
-		// const taskDataWithStats = {
-		//   _id: task._id,
-		//   taskName: task.taskName,
-		//   taskDescription: task.taskDescription,
-		//   // Include other course properties as needed
-		//   totalStudentsEnrolled,
-		//   totalAmountGenerated,
-		// }
-
-		// return taskDataWithStats
-		//   })
-
-		res.status(200).json({ taskDetails })
+		let arr = []
+		let c = 0
+		let complete = 0
+		let incomplete = 0
+		let partial = 0
+		let progress = []
+		let d = 0
+		const taskDetails = await Task.find({ instructor: req.user.id }).populate({
+			path: "taskContent",
+			populate: {
+				path: "subSection",
+			},
+		})
+		taskDetails.forEach((t) => {
+			let count = 0
+			t.taskContent.forEach((val) => {
+				count += val.subSection.length
+			})
+			arr[c++] = count
+		})
+		c = 0
+		for (var i = 0; i < taskDetails.length; i++) {
+			const challengeProg = await ChallengesProgress.find({ challengeId: taskDetails[i]._id })
+			if (challengeProg.length === 0) {
+				incomplete++;
+				c++;
+				progress[d++] = 0
+			}
+			challengeProg.forEach((x) => {
+				if (x.completedSubsection.length === arr[c]) {
+					complete++
+					progress[d++] = 100
+				}
+				else {
+					partial++
+					progress[d++] = x.completedSubsection.length / arr[c] * 100
+				}
+				c++
+			})
+		}
+		const completedTasks = complete
+		const incompletedTasks = incomplete
+		const partialTasks = partial
+		res.status(200).json({
+			tasks: {
+				taskDetails, completedTasks,
+				incompletedTasks,
+				partialTasks, progress
+			}
+		})
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ message: "Server Error" })

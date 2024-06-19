@@ -42,11 +42,12 @@ const SubsectionDetailsSidebar = ({ setReviewModal }) => {
                     {/* buttons */}
                     <div className="flex w-full items-center justify-between">
                         <div onClick={() => {
-                            navigate("/dashboard/enrolled-challenges")}}
+                            navigate("/dashboard/enrolled-challenges")
+                        }}
                             className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-richblack-100 p-1 text-richblack-700 hover:scale-90"
-                        title="Back"
+                            title="Back"
                         >
-                            <IoIosArrowBack size={30} cursor={`pointer`}/>
+                            <IoIosArrowBack size={30} cursor={`pointer`} />
                         </div>
                         <div>
                             <IconBtn text="Add Review"
@@ -65,7 +66,7 @@ const SubsectionDetailsSidebar = ({ setReviewModal }) => {
                     {
                         taskSectionData.map((section, index) => (
                             <div className="mt-2 cursor-pointer text-sm text-richblack-5"
-                            onClick={() => setActiveStatus(section?._id)}
+                                onClick={() => setActiveStatus(section?._id)}
                                 key={index}>
                                 {/* section */}
                                 <div className="flex flex-row justify-between bg-richblack-600 px-5 py-4">
@@ -73,44 +74,43 @@ const SubsectionDetailsSidebar = ({ setReviewModal }) => {
                                         {section?.sectionName}
                                     </div>
                                     <div className="flex items-center gap-3">
-                                    <span
-                    className={`${
-                      activeStatus === section?._id
-                        ? "rotate-0"
-                        : "rotate-180"
-                    } transition-all duration-500`}
-                  >
-                    <BsChevronDown />
-                  </span>
-                </div>
-              </div>
-                                {/* subsections */}
-                                    {
-                                        activeStatus === section?._id && (
-                                            <div className="transition-[height] duration-500 ease-in-out">
-                                                {
-                                                    section.subSection.map((subsection, index) => (
-                                                        <div className={`flex gap-3 px-5 py-2 ${subsectionBarActive === subsection._id ? "bg-yellow-200 font-semibold text-richblack-800"
-                                                                : "hover:bg-richblack-900"
-                                                            }`}
-                                                            key={index}
-                                                            onClick={() => {
-                                                                navigate(`/view-challenge/${taskEntireData?._id}/section/${section?._id}/sub-section/${subsection?._id}`)
-                                                                setSubsectionBarActive(subsection?._id)
-                                                            }}>
-                                                            <input type='checkbox'
-                                                                checked={completedSubsections.includes(subsection?._id)}
-                                                                onChange={() => { }} />
-                                                            <span>
-                                                                {subsection.title}
-                                                            </span>
-                                                        </div>
-                                                    ))
-                                                }
-                                            </div>
-                                        )
-                                    }
+                                        <span
+                                            className={`${activeStatus === section?._id
+                                                    ? "rotate-180"
+                                                    : "rotate-0"
+                                                } transition-all duration-500`}
+                                        >
+                                            <BsChevronDown />
+                                        </span>
+                                    </div>
                                 </div>
+                                {/* subsections */}
+                                {
+                                    activeStatus === section?._id && (
+                                        <div className="transition-[height] duration-500 ease-in-out">
+                                            {
+                                                section.subSection.map((subsection, index) => (
+                                                    <div className={`flex gap-3 px-5 py-2 ${subsectionBarActive === subsection._id ? "bg-yellow-200 font-semibold text-richblack-800"
+                                                        : "hover:bg-richblack-900"
+                                                        }`}
+                                                        key={index}
+                                                        onClick={() => {
+                                                            navigate(`/view-challenge/${taskEntireData?._id}/section/${section?._id}/sub-section/${subsection?._id}`)
+                                                            setSubsectionBarActive(subsection?._id)
+                                                        }}>
+                                                        <input type='checkbox'
+                                                            checked={completedSubsections.includes(subsection?._id)}
+                                                            onChange={() => { }} />
+                                                        <span>
+                                                            {subsection.title}
+                                                        </span>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    )
+                                }
+                            </div>
                         ))
                     }
                 </div>

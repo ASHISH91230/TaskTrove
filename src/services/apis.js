@@ -16,13 +16,6 @@ export const profileEndpoints = {
   GET_STUDENT_DATA_API: BASE_URL + "/profile/studentDashboard",
 }
 
-// // STUDENTS ENDPOINTS
-// export const studentEndpoints = {
-//   COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
-//   COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",
-//   SEND_PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
-// }
-
 // TASK ENDPOINTS
 export const taskEndpoints = {
   GET_ALL_TASK_API: BASE_URL + "/Task/getAlltasks",
@@ -38,8 +31,8 @@ export const taskEndpoints = {
   DELETE_SECTION_API: BASE_URL + "/Task/deleteSection",
   DELETE_SUBSECTION_API: BASE_URL + "/Task/deleteSubSection",
   DELETE_TASK_API: BASE_URL + "/Task/deleteTask",
-  GET_FULL_TASK_DETAILS_AUTHENTICATED:
-    BASE_URL + "/Task/getFullTaskDetails",
+  GET_FULL_TASK_DETAILS_AUTHENTICATED: BASE_URL + "/Task/getFullTaskDetails",
+  CREATE_CATEGORY_TASK: BASE_URL + "/Task/addCategoryTask",
   SUBSECTION_COMPLETION_API: BASE_URL + "/Task/updateTaskProgress",
   CREATE_RATING_API: BASE_URL + "/Task/createRating",
 }

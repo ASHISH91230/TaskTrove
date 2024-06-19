@@ -40,15 +40,15 @@ function UpdatePassword() {
         <div className="spinner"></div>
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
-          <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
-            Choose new password
+          <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-500">
+            Choose New Password
           </h1>
-          <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
+          <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-300">
             Almost done. Enter your new password and you are all set.
           </p>
           <form onSubmit={handleOnSubmit}>
             <label className="relative">
-              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-500">
                 New Password <sup className="text-pink-200">*</sup>
               </p>
               <input
@@ -62,7 +62,7 @@ function UpdatePassword() {
               />
               <span
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                className="absolute right-3 top-[26px] z-[10] cursor-pointer"
               >
                 {showPassword ? (
                   <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -72,7 +72,7 @@ function UpdatePassword() {
               </span>
             </label>
             <label className="relative mt-3 block">
-              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-500">
                 Confirm New Password <sup className="text-pink-200">*</sup>
               </p>
               <input
@@ -86,7 +86,7 @@ function UpdatePassword() {
               />
               <span
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                className="absolute right-3 top-[26px] z-[10] cursor-pointer"
               >
                 {showConfirmPassword ? (
                   <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -105,7 +105,7 @@ function UpdatePassword() {
           </form>
           <div className="mt-6 flex items-center justify-between">
             <Link to="/login">
-              <p className="flex items-center gap-x-2 text-richblack-5">
+              <p className="flex items-center gap-x-2 text-richblack-500">
                 <BiArrowBack /> Back To Login
               </p>
             </Link>

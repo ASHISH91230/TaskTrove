@@ -5,7 +5,7 @@ import { apiConnector } from "../apiconnector"
 import { profileEndpoints } from "../apis"
 import { logout } from "./authAPI"
 
-const { GET_USER_DETAILS_API, GET_USER_ENROLLED_CHALLENGES_API,GET_STUDENT_DATA_API } = profileEndpoints
+const { GET_USER_DETAILS_API, GET_USER_ENROLLED_CHALLENGES_API, GET_STUDENT_DATA_API } = profileEndpoints
 
 export function getUserDetails(token, navigate) {
   return async (dispatch) => {
@@ -38,7 +38,6 @@ export async function getUserEnrolledChallenges(token) {
   const toastId = toast.loading("Loading...")
   let result = []
   try {
-    console.log("BEFORE Calling BACKEND API FOR ENROLLED CHALLENGES");
     const response = await apiConnector(
       "GET",
       GET_USER_ENROLLED_CHALLENGES_API,
@@ -47,19 +46,13 @@ export async function getUserEnrolledChallenges(token) {
         Authorization: `Bearer ${token}`,
       }
     )
-    console.log("AFTER Calling BACKEND API FOR ENROLLED CHALLENGES",response);
-    // console.log(
-    //   "GET_USER_ENROLLED_COURSES_API API RESPONSE............",
-    //   response
-    // )
-
     if (!response.data.success) {
       throw new Error(response.data.message)
     }
     result = response.data.data
   } catch (error) {
     console.log("GET_USER_ENROLLED_CHALLENGES_API API ERROR............", error)
-    toast.error("Could Not Get Enrolled CHALLENGES")
+    toast.error("Could Not Get Enrolled Challenges")
   }
   toast.dismiss(toastId)
   return result
@@ -73,7 +66,7 @@ export async function getStudentData(token) {
       Authorization: `Bearer ${token}`,
     })
     console.log("GET_STUDENT_DATA_API API RESPONSE............", response)
-    result = response?.data
+    result = response?.data?.tasks
   } catch (error) {
     console.log("GET_STUDENT_DATA_API API ERROR............", error)
     toast.error("Could Not Get Student Data")
