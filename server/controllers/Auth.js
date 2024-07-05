@@ -8,7 +8,7 @@ const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 const Profile = require("../models/Profile");
 require("dotenv").config();
 
-// Signup Controller for Registering USers
+// Signup Controller For Registering Users
 
 exports.signup = async (req, res) => {
 	try {
@@ -23,7 +23,7 @@ exports.signup = async (req, res) => {
 			contactNumber,
 			otp,
 		} = req.body;
-		// Check if All Details are there or not
+		// Check if all details are there or not
 		if (
 			!firstName ||
 			!lastName ||
@@ -34,7 +34,7 @@ exports.signup = async (req, res) => {
 		) {
 			return res.status(403).send({
 				success: false,
-				message: "All Fields are required",
+				message: "All Fields Are Required",
 			});
 		}
 		// Check if password and confirm password match
@@ -42,7 +42,7 @@ exports.signup = async (req, res) => {
 			return res.status(400).json({
 				success: false,
 				message:
-					"Password and Confirm Password do not match. Please try again.",
+					"Password And Confirm Password Do Not Match. Please Try Again.",
 			});
 		}
 
@@ -51,24 +51,23 @@ exports.signup = async (req, res) => {
 		if (existingUser) {
 			return res.status(400).json({
 				success: false,
-				message: "User already exists. Please sign in to continue.",
+				message: "User Already Exists. Please Sign In To Continue.",
 			});
 		}
 
 		// Find the most recent OTP for the email
 		const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-		console.log(response);
 		if (response.length === 0) {
 			// OTP not found for the email
 			return res.status(400).json({
 				success: false,
-				message: "The OTP is not valid",
+				message: "The OTP Is Not Valid",
 			});
 		} else if (otp !== response[0].otp) {
 			// Invalid OTP
 			return res.status(400).json({
 				success: false,
-				message: "The OTP is not valid",
+				message: "The OTP Is Not Valid",
 			});
 		}
 
@@ -101,13 +100,13 @@ exports.signup = async (req, res) => {
 		return res.status(200).json({
 			success: true,
 			user,
-			message: "User registered successfully",
+			message: "User Registered Successfully",
 		});
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({
 			success: false,
-			message: "User cannot be registered. Please try again.",
+			message: "User Cannot Be Registered. Please Try Again.",
 		});
 	}
 };
@@ -123,7 +122,7 @@ exports.login = async (req, res) => {
 			// Return 400 Bad Request status code with error message
 			return res.status(400).json({
 				success: false,
-				message: `Please Fill up All the Required Fields`,
+				message: `Please Fill Up All The Required Fields`,
 			});
 		}
 
@@ -135,7 +134,7 @@ exports.login = async (req, res) => {
 			// Return 401 Unauthorized status code with error message
 			return res.status(401).json({
 				success: false,
-				message: `User is not Registered with Us Please SignUp to Continue`,
+				message: `User Is Not Registered With Us Please SignUp To Continue`,
 			});
 		}
 
@@ -166,7 +165,7 @@ exports.login = async (req, res) => {
 		} else {
 			return res.status(401).json({
 				success: false,
-				message: `Password is incorrect`,
+				message: `Password Is Incorrect`,
 			});
 		}
 	} catch (error) {
@@ -186,14 +185,13 @@ exports.sendotp = async (req, res) => {
 		// Check if user is already present
 		// Find user with provided email
 		const checkUserPresent = await User.findOne({ email });
-		// to be used in case of signup
 
 		// If user found with provided email
 		if (checkUserPresent) {
 			// Return 401 Unauthorized status code with error message
 			return res.status(401).json({
 				success: false,
-				message: `User is Already Registered`,
+				message: `User Is Already Registered`,
 			});
 		}
 
@@ -203,9 +201,6 @@ exports.sendotp = async (req, res) => {
 			specialChars: false,
 		});
 		let result = await OTP.findOne({ otp: otp });
-		console.log("Result is Generate OTP Func");
-		console.log("OTP", otp);
-		console.log("Result", result);
 		while (result) {
 			otp = otpGenerator.generate(6, {
 				upperCaseAlphabets: false,
@@ -215,7 +210,6 @@ exports.sendotp = async (req, res) => {
 		}
 		const otpPayload = { email, otp };
 		const otpBody = await OTP.create(otpPayload);
-		console.log("OTP Body", otpBody);
 		res.status(200).json({
 			success: true,
 			message: `OTP Sent Successfully`,
@@ -245,7 +239,7 @@ exports.changePassword = async (req, res) => {
 			// If old password does not match, return a 401 (Unauthorized) error
 			return res
 				.status(401)
-				.json({ success: false, message: "The password is incorrect" });
+				.json({ success: false, message: "The Password Is Incorrect" });
 		}
 
 		// Match new password and confirm new password
@@ -253,7 +247,7 @@ exports.changePassword = async (req, res) => {
 			// If new password and confirm new password do not match, return a 400 (Bad Request) error
 			return res.status(400).json({
 				success: false,
-				message: "The password and confirm password does not match",
+				message: "The Password And Confirm Password Does Not Match",
 			});
 		}
 
@@ -277,10 +271,10 @@ exports.changePassword = async (req, res) => {
 			);
 		} catch (error) {
 			// If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
-			console.error("Error occurred while sending email:", error);
+			console.error("Error Occurred While Sending Email:", error);
 			return res.status(500).json({
 				success: false,
-				message: "Error occurred while sending email",
+				message: "Error Occurred While Sending Email",
 				error: error.message,
 			});
 		}
@@ -288,13 +282,13 @@ exports.changePassword = async (req, res) => {
 		// Return success response
 		return res
 			.status(200)
-			.json({ success: true, message: "Password updated successfully" });
+			.json({ success: true, message: "Password Updated Successfully" });
 	} catch (error) {
 		// If there's an error updating the password, log the error and return a 500 (Internal Server Error) error
-		console.error("Error occurred while updating password:", error);
+		console.error("Error Occurred While Updating Password:", error);
 		return res.status(500).json({
 			success: false,
-			message: "Error occurred while updating password",
+			message: "Error Occurred While Updating Password",
 			error: error.message,
 		});
 	}

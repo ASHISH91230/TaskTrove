@@ -7,10 +7,8 @@ import ConfirmationModal from "../../common/ConfirmationModal"
 import useOnClickOutside from "../../../hooks/useOnClickOutside"
 import { logout } from "../../../services/operations/authAPI"
 import { FaFireAlt } from "react-icons/fa";
-import { apiConnector } from "../../../services/apiconnector"
-import { StreakEndPointWithBadges, profileEndpoints } from "../../../services/apis"
 import { getStreakDetails } from "../../../services/operations/StreakBadgesAPI"
-export default function ProfileDropdown() {
+const ProfileDropdown = () => {
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth);
   const [userstreak, setUserStreak] = useState([]);
@@ -22,25 +20,18 @@ export default function ProfileDropdown() {
   const [confirmationModal, setConfirmationModal] = useState(null)
   useOnClickOutside(ref, () => setOpen(false))
 
-
-  const fetchStreak = async () => {
-    try {
-      console.log("igiggigiggig")
-      console.log(user)
-      const result = await getStreakDetails(user._id, token);
-
-      setUserStreak(result)
-      console.log("result value", result)
-    }
-    catch (error) {
-      console.log("src error in fetchStreak");
-    }
-  }
-
   useEffect(() => {
     setLoading(true)
+    const fetchStreak = async () => {
+      try {
+        const result = await getStreakDetails(user._id, token);
+        setUserStreak(result)
+      }
+      catch (error) {
+        console.log("Error In Fetching Streak");
+      }
+    }
     fetchStreak()
-    console.log("scjaskcjasckjbaskc")
     setLoading(false)
   }, [])
 
@@ -51,14 +42,10 @@ export default function ProfileDropdown() {
       <div className="flex items-center gap-x-1">
         {/* streak icon by ------------->AKG */}
         <div className=" ">
-
-
           <FaFireAlt color=" orange" className=" m-auto w-8 h-6 mr-4" />
           <div className=" text-white  bg-gray-400  m-2 absolute translate-x-5 -translate-y-10 ">
-            {loading ? 'Loading...' : `${userstreak.currentStreak || 0} `}
-
+            {loading ? 'Loading...' : `${userstreak?.streak?.currentStreak || 0} `}
           </div>
-
         </div>
 
         <img
@@ -103,3 +90,4 @@ export default function ProfileDropdown() {
     </button>
   )
 }
+export default ProfileDropdown

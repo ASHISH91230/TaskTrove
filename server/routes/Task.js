@@ -56,7 +56,7 @@ const { auth,isStudent} = require("../middlewares/auth")
 
 // Tasks can Only be Created by Instructors
 router.post("/createTask", auth, isStudent, createTask)
-//Add a Section to a Course
+//Add a Section to a Task
 router.post("/addSection", auth, isStudent, createSection)
 // Update a Section
 router.post("/updateSection", auth, isStudent, updateSection)
@@ -82,7 +82,6 @@ router.post("/addCategoryTask",auth,addCategoryTask)
 //                                      Category routes (Only by Admin)
 // ********************************************************************************************************
 // Category can Only be Created by Admin
-// TODO: Put IsAdmin Middleware here
 
 router.post("/createCategory",auth, isStudent, createCategory)
 router.get("/showAllCategories", showAllCategories)

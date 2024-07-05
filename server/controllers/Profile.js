@@ -86,7 +86,6 @@ exports.getAllUserDetails = async (req, res) => {
 		const userDetails = await User.findById(id)
 			.populate("additionalDetails")
 			.exec();
-		console.log(userDetails);
 		res.status(200).json({
 			success: true,
 			message: "User Data Fetched Successfully",
@@ -110,8 +109,6 @@ exports.updateDisplayPicture = async (req, res) => {
 			1000,
 			1000
 		)
-		console.log(image)
-		console.log("display picture",displayPicture)
 		const updatedProfile = await User.findByIdAndUpdate(
 			{ _id: userId },
 			{ image: image.secure_url },

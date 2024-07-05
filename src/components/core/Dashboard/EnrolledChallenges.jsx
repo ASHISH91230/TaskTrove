@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getUserEnrolledChallenges } from '../../../services/operations/profileAPI';
+import { getStreakDetails } from "../../../services/operations/StreakBadgesAPI"
 import ProgressBar from '@ramonak/react-progress-bar';
 import { useNavigate } from 'react-router-dom'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 
-
-
 const EnrolledChallenges = () => {
-  const TileContent=({ activeStartDate, date, view }) => view === 'month' && date.getDay() === 0 ? <p>🏅</p> : null
-    
-  
-  const { token } = useSelector((state) => state.auth);
 
+  const { token } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.profile)
   const [enrolledChallenges, setEnrolledChallenges] = useState(null);
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
   const [duration, setDuration] = useState(null)
   const [progress, setProgress] = useState(null)
   const navigate = useNavigate()
   let c = 0;
   let d = 0;
   let x = 0;
+
+  useEffect(() => {
+    const fetchStreak = async () => {
+      try {
+        const result = await getStreakDetails(user._id, token);
+        setStartDate(new Date(result.streak.startDate))
+        setEndDate(new Date(result.streak.lastLoginDate))
+      }
+      catch (error) {
+        console.log("Error In Fetching Streak");
+      }
+    }
+    fetchStreak()
+  }, [])
 
   const getEnrolledChallenges = async () => {
     try {
@@ -31,7 +44,7 @@ const EnrolledChallenges = () => {
       setProgress(response.progress)
     }
     catch (error) {
-      console.log("Unable to Fetch Enrolled Challenges");
+      console.log("Unable To Fetch Enrolled Challenges");
     }
   }
 
@@ -39,12 +52,25 @@ const EnrolledChallenges = () => {
     getEnrolledChallenges();
   }, []);
 
+  const tileContent = ({ date, view }) => {
+    if (view === 'month' && startDate && endDate) {
+
+      const formattedDate = date.toLocaleDateString('en-US');
+      const formattedStartDate = startDate.toLocaleDateString('en-US');
+      const formattedEndDate = endDate.toLocaleDateString('en-US');
+
+      if (formattedDate >= formattedStartDate && formattedDate <= formattedEndDate) {
+        return <p style={{ color: 'green' }}>✔</p>;
+      }
+    }
+    return null;
+  };
 
   return (
     <>
       <div className="text-3xl text-richblack-500">Enrolled Challenges</div>
-      <Calendar tileContent={TileContent}/>
-      
+      <Calendar tileContent={tileContent} />
+
       {!enrolledChallenges ? (
         <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
           <div className="spinner"></div>
@@ -52,7 +78,6 @@ const EnrolledChallenges = () => {
       ) : !enrolledChallenges.length ? (
         <p className="grid h-[10vh] w-full place-content-center text-richblack-5">
           You Have Not Enrolled In Any Challenges Yet.
-          {/* TODO: Modify this Empty State */}
         </p>
       ) : (
         <div className="my-8 text-richblack-500">
@@ -77,11 +102,6 @@ const EnrolledChallenges = () => {
                   )
                 }}
               >
-                {/* <img
-                  src={course.thumbnail}
-                  alt="course_img"
-                  className="h-14 w-14 rounded-lg object-cover"
-                /> */}
                 <div className="flex max-w-xs flex-col gap-2">
                   <p className="font-semibold">{challenge.taskName}</p>
                   <p className="text-xs text-richblack-500">
@@ -93,9 +113,9 @@ const EnrolledChallenges = () => {
               </div>
               <div className="w-1/4 px-2 py-3">{duration[c++]}</div>
               <div className="flex w-1/5 flex-col gap-2 px-2 py-3">
-                <p>Progress: {progress[d++]||0}%</p>
+                <p>Progress: {progress[d++] || 0}%</p>
                 <ProgressBar
-                  completed={progress[x++]||0}
+                  completed={progress[x++] || 0}
                   height="8px"
                   isLabelVisible={false}
                 />

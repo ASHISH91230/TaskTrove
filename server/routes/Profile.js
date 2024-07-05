@@ -17,7 +17,7 @@ const {
 router.delete("/deleteProfile",auth, deleteAccount)
 router.put("/updateProfile", auth, updateProfile)
 router.get("/getUserDetails", auth, getAllUserDetails)
-// Get Enrolled Courses
+// Get Enrolled Challenges
 router.get("/getEnrolledChallenges", auth, getEnrolledChallenges)
 router.put("/updateDisplayPicture", auth, updateDisplayPicture)
 router.get("/studentDashboard", auth, isStudent, studentDashboard)

@@ -1,77 +1,59 @@
 const badges = require("../models/badges")
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
-const getUserBadges = async(req, res)=>{
-    const {userId} = req.body;
-    console.log("ksdbjvkejbvksjdbvksdb",userId)
-    try{
-        const user = await User.findById(userId).populate('badge');
-        console.log("usering badges",user.badge)
-      
-        if(!user){
-            return res.status(404).send('Badges not found');
+const getUserBadges = async (req, res) => {
+    const { userId } = req.body;
+    try {
+        const user = await User.findById(userId).populate('badge').exec();
+
+        if (!user) {
+            return res.status(404).send('Badge Not Found');
         }
-        res.json(user.badge);
+
+        const badgeCounts = user.badge.reduce((acc, badge) => {
+            const badgeId = badge._id.toString();
+            if (!acc[badgeId]) {
+                acc[badgeId] = { badge, count: 0 };
+            }
+            acc[badgeId].count += 1;
+            return acc;
+        }, {});
+        const badgeList = Object.values(badgeCounts);
+        res.json(badgeList);
 
     }
-    catch(error){
-        res.status(500).send('error in badges controller');
+    catch (error) {
+        res.status(500).send('Error In Badges Controller');
     }
 };
 
-const createBadge = async(req,res)=>{
-  
-        const {  name, description } = req.body;
-        try {
-            // const user = await User.findById(userId);
-            // if (!user) {
-            //     console.log("userin createbadges",user)
-            //     return res.status(404).send('User not found');
-            // }
-    
-            const Image = req.files.Image;
-            // const dailyloginImage = req.files.dailyloginImage;
-    
-            // Assuming uploadImageToCloudinary handles one image at a time
-            const Images = await uploadImageToCloudinary(
-                Image,
-                process.env.FOLDER_NAME,
-                1000,
-                1000
-            );
-    
-            // const dailyloginImageUrl = await uploadImageToCloudinary(
-            //     dailyloginImage,
-            //     process.env.FOLDER_NAME,
-            //     1000,
-            //     1000
-            // );
-    
-            console.log("Images URL", Images);
-            // console.log("DailyLoginImage URL", dailyloginImageUrl);
-    
-            const badge = new badges({
-                name,
-                description,
-                // userId,
-                Image: Images.secure_url,
-                // dailyloginImage: dailyloginImageUrl.secure_url,
-            });
-    
-            await badge.save();
-            console.log("idddddddddddddd",badge._id);
-            // user.badge.push(badge._id);
+const createBadge = async (req, res) => {
 
-            // await user.save();
-            res.status(201).send(badge);
-        } catch (error) {
-            console.error(error); // Log the actual error for debugging
-            res.status(500).send('Error in badge creation');
-        }
-    };
+    const { name, description } = req.body;
+    try {
+        const Image = req.files.Image;
+        const Images = await uploadImageToCloudinary(
+            Image,
+            process.env.FOLDER_NAME,
+            1000,
+            1000
+        );
 
+        const badge = new badges({
+            name,
+            description,
+            Image: Images.secure_url,
+        });
+
+        await badge.save();
+        res.status(201).send(badge);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error In Badge Creation');
+    }
+};
 
 module.exports = {
     getUserBadges,
     createBadge
-  };
+};
