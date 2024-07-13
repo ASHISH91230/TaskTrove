@@ -43,11 +43,10 @@ export function updateDisplayPicture(token, formData) {
   }
 }
 
-export function updateProfile(token, formData,navigate) {
+export function updateProfile(token, formData, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     try {
-      console.log(formData)
       const response = await apiConnector("PUT", UPDATE_PROFILE_API, formData, {
         Authorization: `Bearer ${token}`,
       })
@@ -63,7 +62,7 @@ export function updateProfile(token, formData,navigate) {
         setUser({ ...response.data.userDetails, image: userImage })
       )
       toast.success("Profile Updated Successfully")
-      localStorage.setItem("user",JSON.stringify(response.data.userDetails));
+      localStorage.setItem("user", JSON.stringify(response.data.userDetails));
       navigate("/dashboard/my-profile");
     } catch (error) {
       console.log("UPDATE_PROFILE_API API ERROR............", error)

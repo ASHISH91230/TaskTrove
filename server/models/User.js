@@ -21,7 +21,6 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			trim: true,
 		},
-
 		// Define the password field with type String and required
 		password: {
 			type: String,
@@ -30,7 +29,6 @@ const userSchema = new mongoose.Schema(
 		//Define the role field with type String and enum values of "Admin", "Student", or "Visitor"
 		accountType: {
 			type: String,
-			//here 
 			enum: ["Student"],
 			required: true,
 		},
@@ -47,7 +45,7 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			ref: "Profile",
 		},
-		/*task*/
+		// Task
 		enrolledChallenges: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
@@ -70,28 +68,21 @@ const userSchema = new mongoose.Schema(
 				ref: "badges"
 			},
 		],
-		Streak: 
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "streakDate"
-			},
-	
-
-
-	/*courseProgress */	TaskProgress: [
+		Streak:
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "streakDate"
+		},
+		// TaskProgress
+		TaskProgress: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "ChallengesProgress",
 			},
 		],
-
 		// Add timestamps for when the document is created and last modified
 	},
 	{ timestamps: true }
-
-
-	//badges
-	//daily login badges.
 
 );
 

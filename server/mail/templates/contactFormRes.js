@@ -3,9 +3,8 @@ exports.contactUsEmail = (
     firstname,
     lastname,
     message,
-    phoneNo,
-    countrycode
-  ) => {
+    phoneNo
+) => {
     return `<!DOCTYPE html>
     <html>
     
@@ -22,7 +21,6 @@ exports.contactUsEmail = (
                 margin: 0;
                 padding: 0;
             }
-    
     
             .container {
                 max-width: 600px;
@@ -74,8 +72,8 @@ exports.contactUsEmail = (
     
     <body>
         <div class="container">
-            <a href="https://studynotion-edtech-project.vercel.app"><img class="logo"
-                    src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo"></a>
+            <a href="https://ibb.co/y0qDFwX"><img class="logo"
+                    src="https://i.ibb.co/y0qDFwX/Tasktrove.png" alt="TaskTrove"></a>
             <div class="message">Contact Form Confirmation</div>
             <div class="body">
                 <p>Dear ${firstname} ${lastname},</p>
@@ -89,10 +87,9 @@ exports.contactUsEmail = (
                 <p>We appreciate your interest and will get back to you shortly. </p>
             </div>
             <div class="support">If you have any further questions or need immediate assistance, please feel free to reach
-                out to us at <a href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!</div>
+                out to us at <a href="mailto:info@tasktrove.com">info@tasktrove.com</a>. We are here to help!</div>
         </div>
     </body>
     
     </html>`
-  }
-  
+}

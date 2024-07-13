@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Define the Courses schema
+// Define the task schema
 const TaskSchema = new mongoose.Schema({
 	taskName: { type: String },
 	taskDescription: { type: String },
@@ -24,19 +24,8 @@ const TaskSchema = new mongoose.Schema({
 			ref: "RatingAndReview",
 		},
 	],
-	// price: {
-	// 	type: Number,
-	// },
-	// thumbnail: {
-	// 	type: String,
-	// },
-	// tag: {
-	// 	type: [String],
-	// 	required: true,
-	// },
 	category: {
 		type: mongoose.Schema.Types.ObjectId,
-		// required: true,
 		ref: "Category",
 	},
 	studentsEnrolled: [
@@ -46,9 +35,6 @@ const TaskSchema = new mongoose.Schema({
 			ref: "user",
 		},
 	],
-	// instructions: {
-	// 	type: [String],
-	// },
 	status: {
 		type: String,
 		enum: ["Draft", "Published"],
@@ -59,5 +45,5 @@ const TaskSchema = new mongoose.Schema({
 	}
 });
 
-// Export the Courses model
+// Export the task model
 module.exports = mongoose.model("Task", TaskSchema);

@@ -20,10 +20,10 @@ exports.createRating = async (req, res) => {
         if (!taskDetails) {
             return res.status(404).json({
                 success: false,
-                message: 'Student is not enrolled in the task',
+                message: 'User Is Not Enrolled In The Task',
             });
         }
-        //check if user already reviewed the /task
+        //check if user already reviewed the task
         const alreadyReviewed = await RatingAndReview.findOne({
             user: userId,
             task: taskId,
@@ -31,7 +31,7 @@ exports.createRating = async (req, res) => {
         if (alreadyReviewed) {
             return res.status(403).json({
                 success: false,
-                message: 'Task is already reviewed by the user',
+                message: 'Task Is Already Reviewed By The User',
             });
         }
         //create rating and review
@@ -49,11 +49,10 @@ exports.createRating = async (req, res) => {
                 }
             },
             { new: true });
-        console.log(updatedTaskDetails);
         //return response
         return res.status(200).json({
             success: true,
-            message: "Rating and Review created Successfully",
+            message: "Rating And Review Created Successfully",
             ratingReview,
         })
     }
@@ -65,8 +64,6 @@ exports.createRating = async (req, res) => {
         })
     }
 }
-
-
 
 //getAverageRating
 exports.getAverageRating = async (req, res) => {
@@ -102,7 +99,7 @@ exports.getAverageRating = async (req, res) => {
         //if no rating/Review exist
         return res.status(200).json({
             success: true,
-            message: 'Average Rating is 0, no ratings given till now',
+            message: 'Average Rating Is 0, No Ratings Given Till Now',
             averageRating: 0,
         })
     }
@@ -133,7 +130,7 @@ exports.getAllRating = async (req, res) => {
             .exec();
         return res.status(200).json({
             success: true,
-            message: "All reviews fetched successfully",
+            message: "All Reviews Fetched Successfully",
             data: allReviews,
         });
     }

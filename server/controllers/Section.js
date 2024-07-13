@@ -1,5 +1,4 @@
 const Section = require("../models/Section");
-const Challenges = require("../models/Challenges");
 const Task = require("../models/Task")
 const SubSection = require("../models/SubSection")
 // CREATE a new section
@@ -12,7 +11,7 @@ exports.createSection = async (req, res) => {
 		if (!sectionName || !taskId) {
 			return res.status(400).json({
 				success: false,
-				message: "Missing required properties",
+				message: "Missing Required Properties",
 			});
 		}
 
@@ -29,7 +28,6 @@ exports.createSection = async (req, res) => {
 			},
 			{ new: true }
 		)
-			//populate ke karan task mein section or subsection ka data store ya diskha sakte haii
 			.populate({
 				path: "taskContent",
 				populate: {
@@ -38,17 +36,17 @@ exports.createSection = async (req, res) => {
 			})
 			.exec();
 
-		// Return the updated course object in the response
+		// Return the updated task object in the response
 		res.status(200).json({
 			success: true,
-			message: "Section created successfully",
+			message: "Section Created Successfully",
 			updatedTask,
 		});
 	} catch (error) {
 		// Handle errors
 		res.status(500).json({
 			success: false,
-			message: "Internal server error",
+			message: "Internal Server Error",
 			error: error.message,
 		});
 	}
@@ -78,10 +76,10 @@ exports.updateSection = async (req, res) => {
 			data: task,
 		});
 	} catch (error) {
-		console.error("Error updating section:", error);
+		console.error("Error Updating Section:", error);
 		res.status(500).json({
 			success: false,
-			message: "Internal server error",
+			message: "Internal Server Error",
 		});
 	}
 };
@@ -97,11 +95,10 @@ exports.deleteSection = async (req, res) => {
 			}
 		})
 		const section = await Section.findById(sectionId);
-		console.log(sectionId, taskId);
 		if (!section) {
 			return res.status(404).json({
 				success: false,
-				message: "Section not Found",
+				message: "Section Not Found",
 			})
 		}
 
@@ -110,7 +107,7 @@ exports.deleteSection = async (req, res) => {
 
 		await Section.findByIdAndDelete(sectionId);
 
-		//find the updated course and return 
+		//find the updated task and return
 		const task = await Task.findById(taskId).populate({
 			path: "taskContent",
 			populate: {
@@ -121,14 +118,14 @@ exports.deleteSection = async (req, res) => {
 
 		res.status(200).json({
 			success: true,
-			message: "Section deleted",
+			message: "Section Deleted",
 			data: task
 		});
 	} catch (error) {
-		console.error("Error deleting section:", error);
+		console.error("Error Deleting Section:", error);
 		res.status(500).json({
 			success: false,
-			message: "Internal server error",
+			message: "Internal Server Error",
 		});
 	}
 };

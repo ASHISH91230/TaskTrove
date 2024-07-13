@@ -7,55 +7,68 @@ import IconBtn from "../../common/IconBtn"
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
 import { useState, useEffect } from "react"
-import { getUserBadges } from "../../../services/operations/StreakBadgesAPI"
+import { getUserBadges, getStreakDetails } from "../../../services/operations/StreakBadgesAPI"
 
 export default function MyProfile() {
   const { user } = useSelector((state) => state.profile)
   const navigate = useNavigate()
   const { width, height } = useWindowSize()
   const [images, setImages] = useState([]);
-const {token}=useSelector((state)=>state.auth)
-//   const [isConfettiActive, setIsConfettiActive] = useState(true);
+  const { token } = useSelector((state) => state.auth)
+  const [userstreak, setUserStreak] = useState([]);
+  const [isConfettiActive, setIsConfettiActive] = useState(false);
 
-  //   useEffect(() => {
-  //     const timer = setTimeout(() => {
-  //       setIsConfettiActive(false);
-  //     }, 5000);
-  // return () => clearTimeout(timer);
-  //   }, []);
+  useEffect(() => {
+    const fetchStreak = async () => {
+      try {
+        const result = await getStreakDetails(user._id, token);
+        setUserStreak(result)
+        if (userstreak.message === 'Welcome Back') {
+          setIsConfettiActive(true)
+          const timer = setTimeout(() => {
+            setIsConfettiActive(false);
+          }, 5000);
+          return () => clearTimeout(timer);
+        }
+      }
+      catch (error) {
+        console.log("Error In Fetching Streak");
+      }
+    }
+    fetchStreak()
+  }, [userstreak.message]);
 
-
-
-useEffect(() => {
-  ; (async () => {
-    // setLoading(true)
-    const imageArray = await getUserBadges(user._id,token)
-    console.log("images------->",imageArray);
-    setImages(imageArray);
-    // setLoading(false)
-  })()
-}, []);
-
-
-
-
+  useEffect(() => {
+    const fetchBadges = async () => {
+      const imageArray = await getUserBadges(user._id, token)
+      setImages(imageArray);
+    }
+    fetchBadges()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
 
     <>
-      {/* <div>
-      {isConfettiActive && <Confetti height={height} width={width} />}
-    </div> */}
-      <h1 className="mb-14 text-3xl font-medium text-richblack-500">
+      <div>
+        {isConfettiActive && <Confetti height={height} width={width} />}
+      </div>
+      <h1 className="mb-5 text-3xl font-medium text-richblack-500">
         My Profile
       </h1>
+      <div className="flex flex-wrap gap-5">
+        {images.map((badge, index) => (
+          <div key={index} className="flex flex-col items-center p-2">
+            <img src={badge.badge.Image} alt="Badge" className="h-[100px] w-[100px] object-cover rounded-[50%]" />
+            <div className="mt-2 text-lg font-bold">{Math.ceil((badge.count) / 2)}</div>
+          </div>
+        ))}
+      </div>
 
+      <div>
+        <img src={user?.Image}></img>
+      </div>
 
-    <div>
-      <img src={user?.Image}></img>
-    </div>
-
-     
       <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
         <div className="flex items-center gap-x-4">
           <img
@@ -93,8 +106,8 @@ useEffect(() => {
         </div>
         <p
           className={`${user?.additionalDetails?.about
-              ? "text-richblack-5"
-              : "text-richblack-400"
+            ? "text-richblack-5"
+            : "text-richblack-400"
             } text-sm font-medium`}
         >
           {user?.additionalDetails?.about ?? "Write Something About Yourself"}

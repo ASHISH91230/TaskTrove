@@ -67,8 +67,7 @@ const otpTemplate = (otp) => {
 	<body>
 		<div class="container">
 			
-
-		<a href="https://ibb.co/SfZmR5j"><img src="https://i.ibb.co/SfZmR5j/florid-task-management.gif" alt="florid-task-management" border="0"></a>
+		<a href="https://ibb.co/SfZmR5j"><img src="https://i.ibb.co/SfZmR5j/florid-task-management.gif" alt="TaskTrove" border="0"></a>
 
 			<div class="message">OTP Verification Email</div>
 			<div class="body">
@@ -81,7 +80,7 @@ const otpTemplate = (otp) => {
 				<a href="https://ibb.co/y0qDFwX"><img src="https://i.ibb.co/y0qDFwX/Tasktrove.png" alt="Tasktrove" border="0"></a>
 			</div>
 			<div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
-					href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!</div>
+					href="mailto:info@tasktrove.com">info@tasktrove.com</a>. We are here to help!</div>
 		</div>
 
 	</body>

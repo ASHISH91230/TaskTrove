@@ -18,19 +18,13 @@ export const profileEndpoints = {
 
 }
 
-//adding endpolint for streama nd badges -------------->AKG
-export const StreakEndPointWithBadges={
+//adding endpoint for streak and badges -------------->AKG
+export const StreakEndPointWithBadges = {
   GET_USER_STREAK_DATA_API: BASE_URL + "/Streak/addstreak",
   GET_USER_BADGES_DATA_API: BASE_URL + "/badges/getUserBadges",
   // CREATE_USER_BADGES_DATA_API:BASE_URL+ "/Streak/createBadge",
-  RESET_USER_STREAK_DATA_API :BASE_URL+ "/Streak/resetStreaks",
+  RESET_USER_STREAK_DATA_API: BASE_URL + "/Streak/resetStreaks",
 }
-// // STUDENTS ENDPOINTS
-// export const studentEndpoints = {
-//   COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
-//   COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",
-//   SEND_PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
-// }
 
 // TASK ENDPOINTS
 export const taskEndpoints = {

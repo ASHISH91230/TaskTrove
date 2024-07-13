@@ -13,7 +13,7 @@ export default function UpdatePassword() {
 
   const [showOldPassword, setShowOldPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
-  const [showNewConfirmPassword,setShowNewConfirmPassword]=useState(false)
+  const [showNewConfirmPassword, setShowNewConfirmPassword] = useState(false)
   const {
     register,
     handleSubmit,
@@ -21,7 +21,6 @@ export default function UpdatePassword() {
   } = useForm()
 
   const submitPasswordForm = async (data) => {
-    // console.log("password Data - ", data)
     try {
       await changePassword(token, data, navigate)
     } catch (error) {
@@ -96,7 +95,7 @@ export default function UpdatePassword() {
 
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
               <label htmlFor="confirmNewPassword" className="lable-style text-richblack-5">
-              Confirm New Password
+                Confirm New Password
               </label>
               <input
                 type={showNewConfirmPassword ? "text" : "password"}
