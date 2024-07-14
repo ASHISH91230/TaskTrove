@@ -2,8 +2,8 @@ const streakDate = require('../models/streakDate')
 const User = require("../models/User")
 const mongoose = require('mongoose');
 const { getDateDifference } = require("../utils/getDateDifference");
-const DAILY_LOGIN_BADGE_ID = new mongoose.Types.ObjectId("6673ea3b34d1787bcf111254"); // Replace with your actual badge ID
-const HARD_CHALLENGE_BADGE_ID = new mongoose.Types.ObjectId("6673eb5b34d1787bcf111256"); // Replace with your actual badge ID
+const DAILY_LOGIN_BADGE_ID = new mongoose.Types.ObjectId("666330eeb48700df183c1648"); // Replace with your actual badge ID
+const HARD_CHALLENGE_BADGE_ID = new mongoose.Types.ObjectId("666331b5c3335a5ab6f9fa69"); // Replace with your actual badge ID
 
 const addstreak = async (req, res) => {
     const { userId } = req.body;
