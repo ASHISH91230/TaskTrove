@@ -59,7 +59,7 @@ export default function MyProfile() {
       <div className="flex flex-wrap gap-5">
         {images.map((badge, index) => (
           <div key={index} className="flex flex-col items-center p-2">
-            <img src={badge.badge.Image} alt="Badge" className="h-[100px] w-[100px] object-cover rounded-[50%]" />
+            <img src={badge.badge.Image} alt="Badge" className="h-[100px] w-[100px] object-cover " />
             <div className="mt-2 text-lg font-bold">{Math.ceil((badge.count) / 2)}</div>
           </div>
         ))}
